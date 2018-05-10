@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import queryString from 'query-string';
 
 export default class Login extends Component{
     constructor(){
