@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import queryString from 'query-string';
+//import queryString from 'query-string';
 
 export default class Login extends Component{
     constructor(){
         super();
-        this.state = {msg: queryString.parse(this.props.location.search).msg};
+        //this.state = {msg: queryString.parse(this.props.location.search).msg};
     }
 
     envia(event){
@@ -40,7 +40,7 @@ export default class Login extends Component{
             //this.props.history.push('/timeline');
         })
         .catch(error =>{
-            this.setState({msg: error.message});
+            //this.setState({msg: error.message});
             console.log(requestInfo);
         })
     }
@@ -70,9 +70,7 @@ export default class Login extends Component{
                                         <div className="text-center">
                                             <input type="submit" value="Enviar" className="btn blue darken-4"/>
                                         </div>
-                                        <div className="text-center mt-2">
-                                            <p className="red-text">{this.state.msg}</p>
-                                        </div>
+                                        
                                     </form>
                                 </div>
                             </div>
