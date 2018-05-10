@@ -15,8 +15,8 @@ export default class Login extends Component{
             mode:'no-cors',            
             body: JSON.stringify(
                 {
-                    email: this.login.value,
-                    password: this.senha.value
+                    email: this.email.value,
+                    password: this.password.value
                 }
             ),
             headers: new Headers({
