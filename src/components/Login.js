@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import $ from 'jquery';
 //import queryString from 'query-string';
 
 export default class Login extends Component{
@@ -9,41 +10,73 @@ export default class Login extends Component{
 
     envia(event){
         event.preventDefault();
-
-        const requestInfo = {
-            method: 'POST',
-            mode:'no-cors',            
-            body: JSON.stringify(
-                {
-                    email: this.email.value,
-                    password: this.password.value
-                }
-            ),
-            headers: new Headers({
+        $.ajax({
+            headers:{
                 'Accept': 'application/json',
-                'Content-Type':'application/json',
-                'Access-Control-Allow-Origin': '*'
-            })
-        };
-
-        fetch('https://api-fapeticao.herokuapp.com/api/login', requestInfo)
-        .then(response => {
-            console.log(response);
-            if(response.ok){
-                return response.json();                
-            }else{
-                throw new Error('Erro ao fazer login.');
+                'Content-Type': 'application/json',
+            },
+            url: 'https://api-fapeticao.herokuapp.com/api/login',
+            contentType: 'application/json',
+            dataType: 'json',
+            type: 'post',
+            data: JSON.stringify({email: this.email.value, password: this.password.value}),
+            success: function(resposta){
+                $.ajax({
+                    headers:{
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + resposta.token
+                    },
+                    url:'https://api-fapeticao.herokuapp.com/api/user',
+                    type: 'get',
+                    success: function(user){
+                        console.log(user);
+                    },
+                    error: function(error){
+                        console.error(error);
+                    }
+                })
+            },
+            error: function(erro){
+                console.log(erro)
             }
-        })
-        .then(token =>{
-            console.log(token);
-            //this.props.history.push('/timeline');
-        })
-        .catch(error =>{
-            //this.setState({msg: error.message});
-            console.log(requestInfo);
-        })
+        });
     }
+
+    // envia(event){
+    //     event.preventDefault();
+    //     const requestInfo = {
+    //         method: 'post',
+    //         mode:'no-cors',            
+    //         body: JSON.stringify(
+    //             {
+    //                 "email": this.email.value,
+    //                 "password": this.password.value
+    //             }
+    //         ),
+    //         headers:{
+    //             'Accept': 'application/json',
+    //             'Content-Type':'application/json',                
+    //         }
+    //     };
+
+    //     fetch('https://api-fapeticao.herokuapp.com/api/login', requestInfo)
+    //     .then(response => {
+    //         console.log(response);
+    //         if(response.ok){
+    //             return response.json();                
+    //         }else{
+    //             throw new Error('Erro ao fazer login.');
+    //         }
+    //     })
+    //     .then(token =>{
+    //         console.log(token);
+    //         //this.props.history.push('/timeline');
+    //     })
+    //     .catch(error =>{
+    //         //this.setState({msg: error.message});
+    //         console.log(requestInfo);
+    //     })
+    // }
 
     render(){
         return(
